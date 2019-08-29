@@ -85,7 +85,7 @@
   </v-container>
 </template>
 <script>
-import axios from 'axios'
+
 import movieApi from '../services/MovieApi'
 export default {
   props: ['id'],

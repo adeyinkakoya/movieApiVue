@@ -29,7 +29,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
   components:{
@@ -43,7 +42,7 @@ export default {
 
   methods: {
     searchMovie(){
-      this.$router.push('search/'+this.searchString)
+      this.$router.push('/search/'+this.searchString)
       this.searchString=''
     }
   },

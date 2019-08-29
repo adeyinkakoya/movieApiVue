@@ -46,7 +46,6 @@
     
 </template>
 <script>
-import axios from 'axios'
 import movieApi from '../services/MovieApi'
 export default {
 props:['term'],
@@ -58,47 +57,34 @@ data() {
     }
 },
 mounted() {
-    axios.get('http://www.omdbapi.com/?apikey=d5eaeb65&page=1&type=movie&Content-Type=application/json&s='+this.term)
-    .then(response=>{
-        if(response.data.Response === 'False'){
-            this.noData = true
-            this.loading = false
-        } else {
-            this.movieData = response.data.Search
-            this.loading= false
-            this.noData = false
-        }
-        
-    })
-    .catch(error=>{
-
-        console.log(error)
-    })
+   this.fetchResult(this.term)
 },
 methods: {
     singleMovie(id){
         this.$router.push('/movie/'+id)
+    },
+    fetchResult(value){
+      movieApi.fetchMovieCollection(value)
+    .then(response => {
+          if (response.Response === 'True') {
+            this.movieData= response.Search
+            this.loading = false
+            this.noData = false
+          } else {
+            this.noData = true
+            this.loading = false
+          }
+        })
+    .catch(error => {
+      console.log(error)
+    })
+
     }
     
 },
 watch:{
   term(newVal){
-    axios.get('http://www.omdbapi.com/?apikey=d5eaeb65&page=1&type=movie&Content-Type=application/json&s='+this.newVal)
-    .then(response=>{
-        if(response.data.Response === 'False'){
-            this.noData = true
-            this.loading = false
-        } else {
-            this.movieData = response.data.Search
-            this.loading= false
-            this.noData = false
-        }
-        
-    })
-    .catch(error=>{
-
-        console.log(error)
-    })
+   this.fetchResult(newVal)
 
   }
 }
@@ -106,5 +92,6 @@ watch:{
 }
 </script>
 <style lang="stylus" scoped>
-
+.v-progress-circular
+    margin: 1rem
 </style>
